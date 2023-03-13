@@ -1,0 +1,7 @@
+
+fastapi==0.79.0
+orjson==3.4.1
+pydantic==1.9.0
+uvicorn==0.18.2
+uvloop==0.14.0
+
