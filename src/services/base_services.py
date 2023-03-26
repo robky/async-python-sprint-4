@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Any, Generic, Type, TypeVar
 
 from asyncpg.exceptions import UniqueViolationError
@@ -15,7 +16,7 @@ CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 
-class Repository:
+class Repository(ABC):
     def get(self, *args, **kwargs):
         raise NotImplementedError
 

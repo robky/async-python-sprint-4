@@ -14,9 +14,9 @@ async def get_session() -> AsyncSession:
 
 Base = declarative_base()
 if "pytest" in modules:
-    base_dsn = app_settings.DATABASE_TEST_DSN
+    base_dsn = app_settings.database_test_dsn
 else:
-    base_dsn = app_settings.DATABASE_DSN
+    base_dsn = app_settings.database_dsn
 
 
 engine = create_async_engine(base_dsn, echo=True, future=True)

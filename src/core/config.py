@@ -1,35 +1,47 @@
 import os
 
-from dotenv import load_dotenv
-from pydantic import PostgresDsn
+from pydantic import BaseSettings, PostgresDsn, parse_obj_as
 
 dotenv_path = os.path.join(os.path.dirname(__file__), "../../.env")
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
 
 
-class AppSettings:
-    PROJECT_NAME: str = os.getenv("PROJECT_NAME", "App")
+class DBSettings(BaseSettings):
+    postgres_user: str = "postgres"
+    postgres_password: str
+    postgres_server: str = "postgres"
+    postgres_port: str = "5432"
+    postgres_db: str = "postgres"
+    postgres_db_test: str = "postgres_test"
 
-    PROJECT_HOST = os.getenv("PROJECT_HOST", "127.0.0.1")
-    PROJECT_PORT = int(os.getenv("PROJECT_PORT", 8080))
+    class Config:
+        env_file = dotenv_path
 
-    SHORT_LINK_LENGTH = int(os.getenv("SHORT_LINK_LENGTH", 6))
 
-    POSTGRES_USER: str = os.getenv("POSTGRES_USER", "postgres")
-    POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "password")
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "db")
-    POSTGRES_PORT: str = os.getenv("POSTGRES_PORT", "5432")
-    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "postgres")
-    POSTGRES_DB_TEST: str = os.getenv("POSTGRES_DB_TEST", "postgres_test")
-    DATABASE_DSN: PostgresDsn = (
-        f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@"
-        f"{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
+db_set = DBSettings()
+
+
+class AppSettings(BaseSettings):
+    project_name: str = "ShortLink"
+    project_host: str = "127.0.0.1"
+    project_port: int = 8080
+
+    short_link_length: int = 6
+
+    database_dsn: PostgresDsn = parse_obj_as(
+        PostgresDsn,
+        f"postgresql+asyncpg://{db_set.postgres_user}:"
+        f"{db_set.postgres_password}@{db_set.postgres_server}:"
+        f"{db_set.postgres_port}/{db_set.postgres_db}"
     )
-    DATABASE_TEST_DSN: PostgresDsn = (
-        f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@"
-        f"{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB_TEST}"
+    database_test_dsn: PostgresDsn = parse_obj_as(
+        PostgresDsn,
+        f"postgresql+asyncpg://{db_set.postgres_user}:"
+        f"{db_set.postgres_password}@{db_set.postgres_server}:"
+        f"{db_set.postgres_port}/{db_set.postgres_db_test}"
     )
+
+    class Config:
+        env_file = dotenv_path
 
 
 app_settings = AppSettings()

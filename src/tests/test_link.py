@@ -34,7 +34,7 @@ async def test_short_link(
     assert response.status_code == status.HTTP_200_OK
 
     # Переход по ссылке
-    response = await async_client.get(link_id)
+    response = await async_client.get(f"{prefix_shorten}/transfer/{link_id}")
     assert response.status_code == status.HTTP_307_TEMPORARY_REDIRECT
     assert response.next_request.url == link_test_data["full_url"]
 
@@ -43,7 +43,7 @@ async def test_short_link(
     assert response.status_code == status.HTTP_200_OK
 
     # Нет перехода по "удаленной" ссылке
-    response = await async_client.get(link_id)
+    response = await async_client.get(f"{prefix_shorten}/transfer/{link_id}")
     assert response.status_code == status.HTTP_410_GONE
 
 

@@ -48,7 +48,7 @@ POST /api/v1/shorten/<shorten-url-id>/status?[full-info]&[max-result=10]&[offset
 
 - Вернуть оригинальный URL:
 ```text
-GET /<shorten-url-id>
+GET /api/v1/shorten/transfer/<shorten-url-id>
 ```
 
 Методы получения статистики принимает в качестве параметра идентификатор сокращённого URL и возвращает информацию о количестве переходов, совершенных по ссылке.

@@ -46,7 +46,7 @@ class Link(LinkInDBBase):
     @classmethod
     def validate_atts(cls, values):
         id = values.get("id")
-        host = f"{app_settings.PROJECT_HOST}:{app_settings.PROJECT_PORT}"
+        host = f"{app_settings.project_host}:{app_settings.project_port}"
         values["short_link_full"] = f"http://{host}/{id}"
         return values
 

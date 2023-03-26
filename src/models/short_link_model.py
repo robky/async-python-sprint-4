@@ -12,7 +12,7 @@ from db.database import Base
 def generate_short_link():
     string = "2345679abcdefghijkmnopqrstuvwxyzABCEFGHJKLMNPRSTUVWXYZ"
     return "".join(
-        choice(string) for _ in range(app_settings.SHORT_LINK_LENGTH)
+        choice(string) for _ in range(app_settings.short_link_length)
     )
 
 
